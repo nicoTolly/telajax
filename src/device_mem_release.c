@@ -32,6 +32,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 int
 telajax_device_mem_release(mem_t device_mem)
 {
-	clReleaseMemObject((cl_mem)device_mem);
-	return 0;
+  assert(device_mem);
+  cl_mem_object_type return_value;
+  int err = clGetMemObjectInfo(device_mem, CL_MEM_TYPE, sizeof(cl_mem_object_type), &return_value, NULL);
+  assert( return_value == CL_MEM_OBJECT_BUFFER || return_value ==
+      CL_MEM_OBJECT_IMAGE2D || return_value == CL_MEM_OBJECT_IMAGE3D);
+  if (err) {
+    goto ERROR;
+  }
+	err = clReleaseMemObject((cl_mem)device_mem);
+  if (err) {
+    goto ERROR;
+  }
+	return err;
+ERROR:
+  printf("Error in device_mem_release: %s\n", get_ocl_error(err));
+	return err;
 }

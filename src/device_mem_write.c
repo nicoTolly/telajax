@@ -39,7 +39,10 @@ telajax_device_mem_write(device_t* device, mem_t device_mem, void* host_mem, siz
 	int err = clEnqueueWriteBuffer(device->_queue, (cl_mem)device_mem,
 		blocking, 0, size, host_mem,
 		(cl_uint) num_events_in_wait_list, event_wait_list, (cl_event*) event);
-	assert(!err);
+  if (err) {
+    printf("Error in device_mem_write: %s\n", get_ocl_error(err));
+  }
+	//assert(!err);
 
 	return err;
 }

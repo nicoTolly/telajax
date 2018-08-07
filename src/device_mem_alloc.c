@@ -32,10 +32,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 mem_t
 telajax_device_mem_alloc(size_t size, mem_flags_t mem_flags, device_t* device, int* error)
 {
-	mem_t dev_mem = (mem_t) clCreateBuffer(device->_context, (cl_mem_flags) mem_flags, size, NULL, NULL);
+  int err;
+	mem_t dev_mem = (mem_t) clCreateBuffer(device->_context, (cl_mem_flags) mem_flags, size, NULL, &err);
 	assert(dev_mem);
 
-	if(error) *error = 0;
+  if (err) {
+    printf("Error in device_mem_alloc: %s\n", get_ocl_error(err));
+  }
+	if(error) *error = err;
 
 	return dev_mem;
 }

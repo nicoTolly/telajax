@@ -56,11 +56,19 @@ telajax_wrapper_build(
 	wrapper._program = clCreateProgramWithSource(device->_context, 1,
 				(const char **) &kernel_ocl_wrapper, NULL, &err);
 	assert(wrapper._program);
+  if (err) {
+    printf("Error in create program: %s\n", get_ocl_error(err));
+    goto ERROR;
+  }
 
 	// FIXME : The most rationale function here is clCompileProgram(), but
 	// currently not implemented in pocl
 	err = clBuildProgram(wrapper._program, 0, NULL, options, NULL, NULL);
-	assert(!err);
+  if (err) {
+    printf("Error in build program: %s\n", get_ocl_error(err));
+    goto ERROR;
+  }
+	//assert(!err);
 
 	// FIXME : This is to force pocl runtime to compile wrapper.
 	// That's why we may need clCompileProgram() to do so, instead of
@@ -68,10 +76,16 @@ telajax_wrapper_build(
 	size_t dummy;
 	err = clGetProgramInfo(wrapper._program, CL_PROGRAM_BINARY_SIZES,
 		sizeof(dummy), &dummy, NULL);
-	assert(!err);
+  if (err) {
+    printf("Error in get program info: %s\n", get_ocl_error(err));
+    goto ERROR;
+  }
+	//assert(!err);
 
 ERROR:
-	if(error) *error = err;
+	if(error != NULL) {
+    *error = err;
+  }
 	return wrapper;
 }
 

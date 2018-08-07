@@ -39,6 +39,9 @@ telajax_device_mem_read(device_t* device, mem_t device_mem, void* host_mem, size
 	int err = clEnqueueReadBuffer(device->_queue, (cl_mem)device_mem,
 		blocking, 0, size, host_mem,
 		(cl_uint) num_events_in_wait_list, event_wait_list, (cl_event*) event);
+  if (err) {
+    printf("Error in device_mem_read: %s\n", get_ocl_error(err));
+  }
 	assert(!err);
 
 	return err;

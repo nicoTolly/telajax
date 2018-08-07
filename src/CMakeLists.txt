@@ -6,6 +6,7 @@ set (TELAJAX_SRC
 	device_mem_release.c
 	device_mem_write.c
 	device_waitall.c
+  handling_ocl_error.c
 	kernel_build.c
 	kernel_enqueue.c
 	kernel_release.c

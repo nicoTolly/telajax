@@ -34,8 +34,12 @@ telajax_kernel_set_args(int num_args, size_t* args_size, void** args, kernel_t* 
 {
 	int err = 0;
 	for(int i = 0; i < num_args; i++){
-		err |= clSetKernelArg(kernel->_kernel, i, args_size[i], args[i]);
+		err = clSetKernelArg(kernel->_kernel, i, args_size[i], args[i]);
+    if (err) {
+      printf("Error in kernel_set_args on arg n°%d: %s\n", i, get_ocl_error(err));
+      return err;
+    }
 	}
-	assert(!err);
-	return err;
+	//assert(!err);
+	return CL_SUCCESS;
 }
