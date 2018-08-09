@@ -2,6 +2,9 @@
 
 ## Basis
 
+This is a fork from hominhquan/telajax
+Original work can be found at https://github.com/hominhquan/telajax/tree/da8892fbbc5b7d6acdf08357afd3ca9e9051b9ca
+
 The idea is to be able to compile standard C functions into an elf object file,
 then link to the OpenCL runtime as an ordinary `cl_program` object.
 This program will be later linked (`clLinkProgram()`) to a second `cl_program`,
