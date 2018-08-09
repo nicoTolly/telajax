@@ -33,5 +33,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 int
 telajax_event_release(event_t event)
 {
+  if (!event) {
+    return CL_INVALID_EVENT;
+  }
 	return clReleaseEvent((cl_event) event);
 }

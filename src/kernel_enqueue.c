@@ -42,7 +42,9 @@ telajax_kernel_enqueue(kernel_t* kernel, device_t* device, event_t* event)
 		0, NULL,
 		event);
 
-	assert(!err);
+  if (err) {
+    printf("Error in kernel_enqueue : %s\n", get_ocl_error(err));
+  }
 
-	return 0;
+	return err;
 }
