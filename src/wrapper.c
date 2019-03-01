@@ -55,7 +55,7 @@ telajax_wrapper_build(
 	// build wrapper program
 	wrapper._program = clCreateProgramWithSource(device->_context, 1,
 				(const char **) &kernel_ocl_wrapper, NULL, &err);
-	assert(wrapper._program);
+	//assert(wrapper._program);
   if (err) {
     printf("Error in create program: %s\n", get_ocl_error(err));
     goto ERROR;
