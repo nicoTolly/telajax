@@ -100,7 +100,7 @@ telajax_kernel_build(
 	FILE *fp, *fpopen;
 
 	if(kernel_code == NULL || wrapper == NULL){
-		err = -1; goto ERROR;
+		err = -1111; goto ERROR;
 	}
 
 	// get a random string
@@ -110,7 +110,7 @@ telajax_kernel_build(
 	fpopen = popen(cmd, "r");
 	if (fpopen == NULL) {
 		printf("Failed to generate a random string\n");
-		err = -1; goto ERROR;
+		err = -1111; goto ERROR;
 	}
 	fgets(rand_string, RANDOM_STRING_LENGTH+1, fpopen);
 	rand_string[RANDOM_STRING_LENGTH] = '\0';
@@ -136,7 +136,7 @@ telajax_kernel_build(
 	fpopen = popen(cmd, "w");
 	if (fpopen == NULL) {
 		printf("Failed to open pipe to gcc\n");
-		err = -1; goto ERROR;
+		err = -1111; goto ERROR;
 	}
 	fwrite(telajax_extra_code_prefix, strlen(telajax_extra_code_prefix), 1, fpopen);
 	fwrite(kernel_code, strlen(kernel_code), 1, fpopen);
@@ -160,12 +160,17 @@ telajax_kernel_build(
 	input_programs[1] = clCreateProgramWithBinary(device->_context, 1,
 		&(device->_device_id), &size_ftell,
 		(const unsigned char **) &kernel_elf_source, NULL, &err);
+  if (err != 0) {
+		goto ERROR;
+  }
 	assert(input_programs[1]);
 	free(kernel_elf_source);
 
 	cl_program program_final = clLinkProgram(device->_context, 1, &(device->_device_id),
 		NULL, 2, input_programs, NULL, NULL, &err);
-	assert(!err);
+  if (err != 0) {
+		goto ERROR;
+  }
 	assert(program_final);
 
 	// release input_programs[1]
@@ -174,7 +179,9 @@ telajax_kernel_build(
 	// build the OpenCL kernel associated with program_final
 	cl_kernel kernel_final = clCreateKernel(program_final, wrapper->_name, &err);
 	assert(kernel_final);
-	assert(!err);
+  if (err != 0) {
+		goto ERROR;
+  }
 
 	// delete rand_file_path_src and rand_file_path_obj
 	remove(rand_file_path_obj);

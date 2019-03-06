@@ -88,7 +88,7 @@ telajax_device_init(int argc, char** argv, int* error)
 			asprintf(&telajax_compiler, "%s/bin/k1-elf-gcc ", tmp_path);
 		}else{
 			printf("K1_TOOLCHAIN_DIR not set, you do not forget something ?\n");
-			err = -1; goto ERROR;
+			err = -1111; goto ERROR;
 		}
 
 		// User can set device type by setting env var for example
